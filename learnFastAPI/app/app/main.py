@@ -1,14 +1,10 @@
 from fastapi import FastAPI
 
+from app.core.config import settings
+
 app = FastAPI()
 
-"""
-app.{HTTPメソッド}("{resource path}")
-def 関数名
-  return {response body}
-"""
 
-
-@app.get("/hello")
+@app.get("/message")
 def hello():
-    return {"message": "Hello World"}
+    return {"msg": f"{settings.MESSAGE}"}
