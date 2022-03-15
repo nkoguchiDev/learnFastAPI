@@ -20,7 +20,7 @@ services:
         - neo4j-data:/data
         - neo4j-logs:/logs
         - neo4j-conf:/conf
-        - ./tmp:/var/lib/neo4j/certificates/bolt
+        - ./certs:/var/lib/neo4j/certificates/bolt
     environment:
         # neo4j password setting (NEO4J_AUTH=neo4j/<password>)
         - NEO4J_AUTH=neo4j/neo4jj
