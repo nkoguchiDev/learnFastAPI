@@ -20,15 +20,9 @@ services:
         - neo4j-data:/data
         - neo4j-logs:/logs
         - neo4j-conf:/conf
-        - ./backend/app/certs:/var/lib/neo4j/certificates/bolt
     environment:
         # neo4j password setting (NEO4J_AUTH=neo4j/<password>)
         - NEO4J_AUTH=neo4j/neo4jj
-        - NEO4J_dbms_ssl_policy_bolt_enabled=true
-        - NEO4J_dbms_ssl_policy_bolt_private__key=server.key
-        - NEO4J_dbms_ssl_policy_bolt_public__certificate=server.crt
-        - NEO4J_dbms_connector_bolt_tls__level=REQUIRED
-        - NEO4J_dbms_ssl_policy_bolt_client__auth=NONE
   react:
     container_name: react-web-app
     image: node:17-alpine
