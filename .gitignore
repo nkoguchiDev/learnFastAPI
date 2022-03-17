@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 # neo4j server cert
-learnFastAPI/app/certs
+learnFastAPI/backend/app/certs

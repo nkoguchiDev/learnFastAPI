@@ -2,4 +2,4 @@ fastapi
 uvicorn
 tavern
 pydantic
-neomodel
+neomodel==3.3.2
