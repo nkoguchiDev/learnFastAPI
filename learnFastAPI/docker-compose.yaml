@@ -1,28 +1,5 @@
 version: '3'
 services:
-  api:
-    container_name: FastAPI
-    build: ./backend/app
-    ports:
-      - "80:80"
-    environment:
-        - GRAPH_DB_HOST=neo4j
-        - GRAPH_DB_PORT=7687
-        - GRAPH_DB_USER=neo4j
-        - GRAPH_DB_PASSWORD=neo4jj
-  neo4j:
-    container_name: neo4j
-    image: neo4j
-    ports:
-        - 7474:7474
-        - 7687:7687
-    volumes: 
-        - neo4j-data:/data
-        - neo4j-logs:/logs
-        - neo4j-conf:/conf
-    environment:
-        # neo4j password setting (NEO4J_AUTH=neo4j/<password>)
-        - NEO4J_AUTH=neo4j/neo4jj
   react:
     container_name: react-web-app
     image: node:17-alpine
@@ -33,9 +10,41 @@ services:
     ports:
       - 3000:3000
 
-# default user and pass "neo4j"
+  api:
+    container_name: FastAPI
+    build: ./backend/app
+    ports:
+      - "80:80"
+    # volumes:
+    #   - ./backend/app:/app
+    environment:
+        - MONGO_DB_HOST=mongo
+        - MONGO_DB_PORT=${DB_PORT}
+        - MONGO_DB_USER=${DB_USER}
+        - MONGO_DB_PASSWORD=${DB_PASSWORD}
+
+  mongo:
+    image: mongo:5.0
+    restart: always
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mongo-database:/database
+
+  mongo_express:
+    image: mongo-express:1.0.0-alpha.4
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${DB_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${DB_PASSWORD}
+      ME_CONFIG_MONGODB_SERVER: mongo
+    depends_on:
+      - mongo # mongoコンテナが起動してから起動させる
 
 volumes:
-  neo4j-data:
-  neo4j-logs:
-  neo4j-conf:
+  mongo-database:
